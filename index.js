@@ -217,6 +217,26 @@ app.get('/sets/:id', async (req, res) => {
   }
 });
 
+// Card Details
+app.get('/card/:id', async (req, res) => {
+  const cardId = req.params.id;
+
+  try {
+    const response = await axios.get(`${process.env.POKEMON_API}/cards/${cardId}`, {
+      headers: {
+        'X-Api-Key': process.env.POKEMON_API_KEY
+      }
+    });
+
+    const card = response.data.data;
+
+    res.render('pkmnCardDetails', { card });
+  } catch (err) {
+    console.error('Failed to fetch card details:', err.response?.data || err.message);
+    res.status(500).send('Failed to load card details');
+  }
+});
+
 // Help page
 app.get('/help', (req, res) => {
   res.render('help');

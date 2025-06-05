@@ -63,7 +63,7 @@
           <p>Set: <%= card.set.name %></p>
           <% const avgSell = card.cardmarket?.prices?.averageSellPrice; %>
           <p>Avg Price: <%= avgSell ? `$${avgSell.toFixed(2)}` : 'N/A' %></p>
-          <a href="/debug/<%= card.id %>" class="btn-debug">Debug</a>
+          <a href="/card/<%= card.id %>" class="btn">Details</a>
         </div>
       <% }); %>
     </div>

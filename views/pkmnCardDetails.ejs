@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= card.name %> - Details</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <nav class="simple-navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><a href="/home">CardDB</a></div>
+      <ul class="nav-links">
+        <li><a href="/pkmnSearch">Search</a></li>
+        <li><a href="/pkmnSets">Expansions</a></li>
+        <li><a href="/help">Help</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <h1 class="card-title"><%= card.name %></h1>
+
+  <div class="card-layout">
+    <div class="large-card-img-container">
+      <img class="large-card-img" src="<%= card.images.large %>" alt="<%= card.name %>">
+    </div>
+
+    <div class="info-block">
+      <p><strong>Set:</strong> <%= card.set.name %></p>
+      <p><strong>Rarity:</strong> <%= card.rarity || 'N/A' %></p>
+      <p><strong>Types:</strong> <%= (card.types || []).join(', ') || 'N/A' %></p>
+      <p><strong>HP:</strong> <%= card.hp || 'N/A' %></p>
+      <p><strong>Average Sell Price:</strong> $<%= card.cardmarket?.prices?.averageSellPrice?.toFixed(2) || 'N/A' %></p>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="priceChart" width="500" height="300"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    const whiteBackgroundPlugin = {
+    id: 'whiteBackground',
+    beforeDraw: (chart) => {
+      const ctx = chart.canvas.getContext('2d');
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, chart.width, chart.height);
+      ctx.restore();
+    }
+  };
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['30 Days', '7 Days', '1 Day'],
+        datasets: [{
+          label: 'Avg Sell Price ($)',
+          // Somehow works while giving an error message
+          data: [
+            <%= card.cardmarket?.prices?.avg30 || 0 %>,
+            <%= card.cardmarket?.prices?.avg7 || 0 %>,
+            <%= card.cardmarket?.prices?.avg1 || 0 %>
+          ],
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          tension: 0.4,
+          pointRadius: 5,
+          pointBackgroundColor: 'rgba(75, 192, 192, 1)'
+        }]
+      },
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Average Sell Price Over Time'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'USD'
+            }
+          }
+        }
+      }
+    });
+  </script>
+  <a class="btn" href="/debug/<%= card.id %>" style="margin-top: 20px;">Debug JSON</a>
+</body>
+</html>
