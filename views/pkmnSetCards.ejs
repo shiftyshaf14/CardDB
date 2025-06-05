@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <nav class="simple-navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><a href="/Home">CardDB</a></div>
+      <ul class="nav-links">
+        <li><a href="/pkmnSearch">Search</a></li>
+        <li><a href="/pkmnSets">Expansions</a></li>
+        <li><a href="/help">Help</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="set-banner">
+    <img src="<%= set.images.logo %>" alt="<%= set.name %> Logo" class="set-logo">
+  </div>
+
+  <div class="sort-buttons">
+
+  <form action="/sets/<%= setId %>" method="GET">
+    <input type="hidden" name="sort" value="price">
+    <input type="hidden" name="order" value="<%= sortField === 'price' && sortOrder === 'asc' ? 'desc' : 'asc' %>">
+    <button class="btn sort-btn" type="submit">
+      Sort by Price <%= sortField === 'price' ? (sortOrder === 'asc' ? '↑' : '↓') : '' %>
+    </button>
+  </form>
+
+  <form action="/sets/<%= setId %>" method="GET">
+    <input type="hidden" name="sort" value="rarity">
+    <input type="hidden" name="order" value="<%= sortField === 'rarity' && sortOrder === 'asc' ? 'desc' : 'asc' %>">
+    <button class="btn sort-btn" type="submit">
+      Sort by Rarity <%= sortField === 'rarity' ? (sortOrder === 'asc' ? '↑' : '↓') : '' %>
+    </button>
+  </form>
+  </div>
+
+  <div class="card-container">
+    <% cards.forEach(card => { %>
+      <div class="card">
+        <img src="<%= card.images?.small %>" alt="<%= card.name %>" onerror="this.onerror=null; this.src='/default.png';">
+        <h2><%= card.name %></h2>
+        <p>Set: <%= card.set.name %></p>
+        <% if (card.tcgplayer?.prices?.normal?.market) { %>
+          <p>Price: $<%= card.tcgplayer.prices.normal.market %></p>
+        <% } else { %>
+          <p>Price: N/A</p>
+        <% } %>
+      </div>
+    <% }); %>
+  </div>
+
+</body>
+</html>

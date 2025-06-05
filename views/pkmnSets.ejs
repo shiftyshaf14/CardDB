@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expansions - Pokémon TCG</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <nav class="simple-navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><a href="/home">CardDB</a></div>
+      <ul class="nav-links">
+        <li><a href="/pkmnSearch">Search</a></li>
+        <li><a href="/pkmnSets">Expansions</a></li>
+        <li><a href="/help">Help</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <h1>Sets / Expansions</h1>
+
+  <div class="set-container">
+    <% sets.forEach(set => { %>
+      <div class="set-card">
+        <img src="<%= set.images.logo %>" alt="<%= set.name %> Logo" onerror="this.onerror=null; this.src='/default.png';">
+        <h2><%= set.name %></h2>
+        <p>Released: <%= set.releaseDate %></p>
+        <a href="/sets/<%= set.id %>" class="btn">View Cards</a>
+      </div>
+    <% }); %>
+  </div>
+
+</body>
+</html>
