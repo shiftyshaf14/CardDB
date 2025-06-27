@@ -9,7 +9,7 @@
 
   <nav class="simple-navbar">
     <div class="nav-container">
-      <div class="nav-logo"><a href="/home">CardDB</a></div>
+      <div class="nav-logo"><a href="/">CardDB</a></div>
       <ul class="nav-links">
         <li><a href="/pkmnSearch">Search</a></li>
         <li><a href="/pkmnSets">Expansions</a></li>
@@ -19,6 +19,24 @@
   </nav>
 
   <h1>Sets / Expansions</h1>
+
+  <div class="sort-buttons">
+  <form action="/pkmnSets" method="GET">
+    <input type="hidden" name="sort" value="date">
+    <input type="hidden" name="order" value="<%= sortField === 'date' && sortOrder === 'asc' ? 'desc' : 'asc' %>">
+    <button class="btn sort-btn" type="submit">
+      Sort by Date <%= sortField === 'date' ? (sortOrder === 'asc' ? '↑' : '↓') : '' %>
+    </button>
+  </form>
+
+  <form action="/pkmnSets" method="GET">
+    <input type="hidden" name="sort" value="alpha">
+    <input type="hidden" name="order" value="<%= sortField === 'alpha' && sortOrder === 'asc' ? 'desc' : 'asc' %>">
+    <button class="btn sort-btn" type="submit">
+      Sort by Name <%= sortField === 'alpha' ? (sortOrder === 'asc' ? '↑' : '↓') : '' %>
+    </button>
+  </form>
+  </div>
 
   <div class="set-container">
     <% sets.forEach(set => { %>

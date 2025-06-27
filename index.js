@@ -9,7 +9,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 // Home page
-app.get('/home', (req, res) => {
+app.get('/', (req, res) => {
   res.render('home');
 });
 
@@ -125,8 +125,28 @@ app.get('/pkmnSets', async (req, res) => {
         'X-Api-Key': process.env.POKEMON_API_KEY
       }
     });
-    const sets = response.data.data;
-    res.render('pkmnSets', { sets });
+
+    let sets = response.data.data;
+
+    const sortField = req.query.sort || 'date';
+    const sortOrder = req.query.order === 'desc' ? 'desc' : 'asc';
+
+    if (sortField === 'alpha') {
+      sets.sort((a, b) =>
+        sortOrder === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name)
+      );
+    } else {
+      sets.sort((a, b) =>
+        sortOrder === 'asc'
+          ? new Date(a.releaseDate) - new Date(b.releaseDate)
+          : new Date(b.releaseDate) - new Date(a.releaseDate)
+      );
+    }
+
+    res.render('pkmnSets', { sets, sortField, sortOrder });
+
   } catch (err) {
     console.error('Failed to load sets:', err.response?.data || err.message);
     res.send('Failed to load sets');
