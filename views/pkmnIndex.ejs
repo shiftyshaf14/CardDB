@@ -35,7 +35,7 @@
       </button>
     </form>
 
-    <form action="/" method="GET">
+    <form action="/pkmnSearch" method="GET">
       <input type="hidden" name="name" value="<%= searchQuery %>">
       <input type="hidden" name="sort" value="price">
       <input type="hidden" name="order" value="<%= sortField === 'price' && sortOrder === 'asc' ? 'desc' : 'asc' %>">
@@ -44,7 +44,7 @@
       </button>
     </form>
 
-    <form action="/" method="GET">
+    <form action="/pkmnSearch" method="GET">
       <input type="hidden" name="name" value="<%= searchQuery %>">
       <input type="hidden" name="sort" value="rarity">
       <input type="hidden" name="order" value="<%= sortField === 'rarity' && sortOrder === 'asc' ? 'desc' : 'asc' %>">
@@ -71,10 +71,10 @@
   
   <div class="pagination">
     <% if (page > 1) { %>
-      <a href="/?name=<%= searchQuery %>&sort=<%= sortField %>&order=<%= sortOrder %>&page=<%= page - 1 %>">Previous</a>
+      <a href="/pkmnSearch?name=<%= searchQuery %>&sort=<%= sortField %>&order=<%= sortOrder %>&page=<%= page - 1 %>">Previous</a>
     <% } %>
     <% if (hasNext) { %>
-      <a href="/?name=<%= searchQuery %>&sort=<%= sortField %>&order=<%= sortOrder %>&page=<%= page + 1 %>">Next</a>
+      <a href="/pkmnSearch?name=<%= searchQuery %>&sort=<%= sortField %>&order=<%= sortOrder %>&page=<%= page + 1 %>">Next</a>
     <% } %>
   </div>
 
