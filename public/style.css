@@ -436,3 +436,87 @@ form button {
   max-width: 600px;
   margin: auto;
 }
+
+/* magic card names */
+.magic-card-name {
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-size: small;
+}
+
+.card-site-links a {
+  display : inline-block;
+  margin: 0 23px;
+  color: rgb(110, 188, 211);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  text-decoration: none;
+}
+
+.card-site-links a:hover {
+  color: rgb(15, 52, 203);
+  text-decoration: none;
+}
+
+/* Modal styles */
+.modal {
+  display: none;             /* hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;   /* works only when display:flex is applied */
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 300px;
+  max-width: 80%;
+}
+.modal-content button {
+  position: fixed;
+  top: 120px;
+  right: 220px;
+  background: transparent;
+  border-radius: 20%;
+  border-color: white;
+}
+
+.modal-content .sets-textbox {
+  height : 450px;
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+/* all text in the modal content div */
+.modal-content p {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.modal-content a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.info-block .open-modal-button button {
+  padding: 10px 20px;
+  font-size: 19px;
+  color: rgb(59, 59, 166);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.info-block .open-modal-button button:hover {
+  color: rgb(36, 175, 221);
+  text-decoration: underline;
+}
