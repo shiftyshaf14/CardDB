@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= card.name %> - Details</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <nav class="simple-navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><a href="/">CardDB</a></div>
+      <ul class="nav-links">
+        <li><a href="/ygoSearch">Search</a></li>
+        <li><a href="/ygoSets">Expansions</a></li>
+        <li><a href="/help">Help</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <h1 class="card-title"><%= card.name %></h1>
+
+  <div class="card-layout">
+    <div class="large-card-img-container">
+      <img class="large-card-img" src="<%= card.card_images[0].image_url %>" alt="<%= card.name %>">
+    </div>
+
+    <div class="info-block">
+      <div class="open-modal-button">
+        <button id="open-modal">Sets</button>
+      </div>
+      <div id="sets-modal" class="modal">
+        <div class="modal-content">
+          <button id="close-modal" class="close">X</button>
+          <p class="sets-textbox">
+            All Dark Magician Sets:<br>
+            <% for(var i = 0; i < card.card_sets.length; i++) { %>
+              <a href="https://www.google.com/search?q=Yu-Gi-Oh! <%= card.name %> <%= card.card_sets[i].set_name %> Set <%= card.card_sets[i].set_code %>" target="_blank" rel="noopener noreferrer">
+                <%= card.card_sets[i].set_name + " " + card.card_sets[i].set_code %></a><br>
+            <% } %>
+          </p>
+        </div>
+      </div>
+      <script>
+        const modal = document.getElementById("sets-modal");
+        const openModal = document.getElementById("open-modal");
+        const close = document.getElementById("close-modal");
+
+        openModal.addEventListener("click", ()=> {
+          modal.style.display = "flex";
+        });
+
+        close.addEventListener("click", () => {
+          modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (event) => {
+          if (event.target === modal) {
+            modal.style.display = "none";
+          }
+        });
+      </script>
+      <p><strong>Rarity:</strong> <%= card.card_sets[0].set_rarity || 'N/A' %></p>
+      <p><strong>Types:</strong> <%= (card.type || 'N/A') %></p>
+      <p><strong>ATK:</strong> <%= card.atk || 'N/A' %></p>
+      <p><strong>DEF:</strong> <%= card.def || 'N/A' %></p>
+      <p><strong>Level:</strong> <%= card.level || 'N/A' %></p>
+
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="priceChart" width="500" height="300"></canvas>
+    <div class="card-site-links">
+      <a href="https://www.cardmarket.com/en/YuGiOh/Products/Search?category=-1&searchString=<%= card.name %>" target="_blank" rel="noopener noreferrer">Cardmarket</a>
+      <a href="https://www.tcgplayer.com/search/all/product?q=<%= card.name %>&view=grid" target="_blank" rel="noopener noreferrer">TCGPlayer</a>
+      <a href="https://www.ebay.com/sch/i.html?_nkw=<%= card.name %>&_sacat=0&_from=R40&_trksid=p4432023.m570.l1313" target="_blank" rel="noopener noreferrer">eBay</a>
+      <a href="https://www.amazon.com/s?k=<%= card.name %>" target="_blank" rel="noopener noreferrer">Amazon</a>
+      <a href="https://www.coolstuffinc.com/main_search.php?pa=searchOnName&page=1&resultsPerPage=25&q=<%= card.name %>" target="_blank" rel="noopener noreferrer">CoolStuffInc</a>
+    </div>
+  </div>
+
+  
+  
+  <script>
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    // turning the map into an array so I can sort and display bar 
+    // shart in ascending order
+    <%
+    const prices = card.card_prices[0];
+    let priceArray = Object.entries(prices);
+    priceArray.sort((a, b) => parseFloat(a[1]) - parseFloat(b[1]));
+    console.log(parseFloat(priceArray[1][1]));
+    %>
+    
+    new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        '<%= priceArray[0][0] %>',
+        '<%= priceArray[1][0] %>',
+        '<%= priceArray[2][0] %>',
+        '<%= priceArray[3][0] %>',
+        '<%= priceArray[4][0] %>'
+      ],
+      datasets: [{
+        label: 'Price in USD',
+        data: [
+          <%= parseFloat(priceArray[0][1]) %>,
+          <%= parseFloat(priceArray[1][1]) %>,
+          <%= parseFloat(priceArray[2][1]) %>,
+          <%= parseFloat(priceArray[3][1]) %>,
+          <%= parseFloat(priceArray[4][1]) %>
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    },
+    
+  });
+  </script>
+
+ 
+  <a class="btn" href="/debug/<%= card.id %>" style="margin-top: 20px;">Debug JSON</a>
+</body>
+</html>

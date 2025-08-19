@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Magic: The Gathering Cards</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <nav class="simple-navbar">
+    <div class="nav-container">
+      <div class="nav-logo"><a href="/">CardDB</a></div>
+      <ul class="nav-links">
+        <li><a href="/ygoSearch">Search</a></li>
+        <li><a href="/magicSets">Expansions</a></li>
+        <li><a href="/help">Help</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <h1>YuGiOh Search</h1>
+
+  <form action="/ygoSearch" method="GET">
+    <input type="text" name="name" placeholder="Search by name..." value="<%= searchQuery || '' %>" required>
+    <button type="submit" class="btn">Search</button>
+  </form>
+
+  <div class="sort-buttons">
+    <form action="/ygoSearch" method="GET">
+      <input type="hidden" name="name" value="<%= searchQuery %>">
+      <input type="hidden" name="sort" value="date">
+      <input type="hidden" name="order" value="<%= sortField === 'date' && sortOrder === 'asc' ? 'desc' : 'asc' %>">
+      <button class="btn sort-btn" type="submit">
+        Sort by Date <%= sortField === 'date' ? (sortOrder === 'asc' ? '↑' : '↓') : '' %>
+      </button>
+    </form>
+<!-- 
+    <form action="/ygoSearch" method="GET">
+      <input type="hidden" name="name" value="<%= searchQuery %>">
+      <input type="hidden" name="sort" value="price">
+      <input type="hidden" name="order" value="<%= sortField === 'price' && sortOrder === 'asc' ? 'desc' : 'asc' %>">
+      <button class="btn sort-btn" type="submit">
+        Sort by Price <%= sortField === 'price' ? (sortOrder === 'asc' ? '↑' : '↓') : '' %>
+      </button>
+    </form> -->
+
+    <form action="/ygoSearch" method="GET">
+      <input type="hidden" name="name" value="<%= searchQuery %>">
+      <input type="hidden" name="sort" value="rarity">
+      <input type="hidden" name="order" value="<%= sortField === 'rarity' && sortOrder === 'asc' ? 'desc' : 'asc' %>">
+      <button class="btn sort-btn" type="submit">
+        Sort by Rarity <%= sortField === 'rarity' ? (sortOrder === 'asc' ? '↑' : '↓') : '' %>
+      </button>
+    </form>
+  </div>
+
+ <% if (cards && cards.length) { %>
+  <div class="card-container">
+    <% cards.forEach(card => { %>
+      <% let counter = 0; %>
+      <% card.card_images.forEach(img => { %>
+        <div class="card">
+          <img 
+            src="<%= img.image_url %>" 
+            onerror="this.onerror=null; this.src='/images/imgnotfound.jpg';" 
+            alt="<%= card.name %>"
+          >
+          <div class="magic-card-name">
+            <h2><%= card.name %></h2>
+          </div>
+          
+          <a href="/ygoCard/<%= card.id %>" class="btn">Details</a>
+        </div>
+        <% counter++; %>
+      <% }) %>
+    <% }) %>
+  </div>
+<% } %>
+  
+  <div class="pagination">
+    <% if (page > 1) { %>
+      <a href="/?name=<%= searchQuery %>&sort=<%= sortField %>&order=<%= sortOrder %>&page=<%= page - 1 %>">Previous</a>
+    <% } %>
+    <% if (hasNext) { %>
+      <a href="/?name=<%= searchQuery %>&sort=<%= sortField %>&order=<%= sortOrder %>&page=<%= page + 1 %>">Next</a>
+    <% } %>
+  </div>
+
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+
+</body>
+</html>
